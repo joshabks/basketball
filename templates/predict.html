@@ -7,7 +7,12 @@
     <h1>Make a Prediction</h1>
     <p>You have {{ points }} points.</p>
 
+    <h3>Predicting for: {{ selected_date }}</h3>
+
     <form method="POST">
+        <!-- Send the selected date back to the server -->
+        <input type="hidden" name="game_date" value="{{ selected_date }}">
+
         <label for="player">Player Name:</label>
         <input type="text" name="player" required><br><br>
 
