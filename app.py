@@ -43,10 +43,20 @@ def get_player_stat(player_name, game_id):
         print("Error getting player stats:", e)
         return None
 
+from datetime import timedelta
+
 @app.route("/")
 def index():
-    games = get_today_games()
-    return render_template("index.html", games=games, points=user_points)
+    today = datetime.today()
+    tomorrow = today + timedelta(days=1)
+
+    return render_template("index.html",
+                           today=today.strftime('%Y-%m-%d'),
+                           tomorrow=tomorrow.strftime('%Y-%m-%d'),
+                           points=user_points)
+
+
+from datetime import timedelta
 
 @app.route("/predict", methods=["GET", "POST"])
 def predict():
@@ -57,6 +67,7 @@ def predict():
         prediction = int(request.form["prediction"])
         wager = int(request.form["wager"])
         game_id = request.form["game_id"]
+        game_date = request.form["game_date"]
 
         if wager > user_points or wager <= 0:
             return "Invalid wager"
@@ -77,9 +88,15 @@ def predict():
                                success=success,
                                winnings=winnings,
                                points=user_points)
+
     else:
-        games = get_today_games()
-        return render_template("predict.html", games=games, points=user_points)
+        game_date = request.args.get("date", datetime.today().strftime('%Y-%m-%d'))
+        games = get_games(game_date)
+        return render_template("predict.html",
+                               games=games,
+                               points=user_points,
+                               selected_date=game_date)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
