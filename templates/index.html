@@ -7,6 +7,13 @@
     <h1>NBA Prediction Game</h1>
     <p>You have {{ points }} points.</p>
 
+    <h2>Make a Prediction</h2>
+    <p>Select a date:</p>
+    <ul>
+        <li><a href="{{ url_for('predict', date=today) }}">Predict for Today ({{ today }})</a></li>
+        <li><a href="{{ url_for('predict', date=tomorrow) }}">Predict for Tomorrow ({{ tomorrow }})</a></li>
+    </ul>
+
     <h2>Today's Games</h2>
     {% if games %}
         <ul>
@@ -14,7 +21,6 @@
                 <li>{{ game['home_team']['full_name'] }} vs {{ game['visitor_team']['full_name'] }}</li>
             {% endfor %}
         </ul>
-        <a href="{{ url_for('predict') }}">Make a Prediction</a>
     {% else %}
         <p>No games today.</p>
     {% endif %}
