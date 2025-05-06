@@ -5,9 +5,8 @@ from datetime import datetime
 app = Flask(__name__)
 user_points = 100
 
-def get_today_games():
-    today = datetime.today().strftime('%Y-%m-%d')
-    url = f"https://www.balldontlie.io/api/v1/games?start_date={today}&end_date={today}"
+def get_games(date):
+    url = f"https://www.balldontlie.io/api/v1/games?start_date={date}&end_date={date}"
     try:
         response = requests.get(url)
         response.raise_for_status()
